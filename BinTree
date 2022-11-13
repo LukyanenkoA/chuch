@@ -1,0 +1,120 @@
+public class BinTree<Item extends Comparable <Item>> {
+    private  TreeNode<Item> root;
+    BinTree(){
+        root=null;
+    }
+    BinTree(Item data, Item data2){
+        root=new TreeNode<Item>(data, data2);
+    }
+    void printRoot(){
+        root.printNode();
+    }
+    private TreeNode<Item> heir(TreeNode<Item>node){
+        TreeNode<Item> p = node;
+        TreeNode<Item> h = node;
+        TreeNode<Item> temp = node.getRight();
+        while(temp!=null){
+            p = h;
+            h = temp;
+            temp = temp.getLeft();
+        }
+        if(h!=node.getRight()){
+            p.setLeft(h.getRight());
+            h.setRight(node.getRight());
+        }
+        return h;
+    }
+    public TreeNode<Item> find(Item value){
+        TreeNode<Item> temp = this.root;
+        while(temp.getData().compareTo(value)!=0){
+            if(temp.getData().compareTo(value) >0){
+                temp=temp.getLeft();
+            } else{
+                temp=temp.getRight();
+            }
+            if(temp==null)
+                return null;
+        }
+        return temp;
+    }
+    public void add(Item value, Item value2){
+        TreeNode<Item>t=new TreeNode<Item>(value, value2);
+        t.setLeft(null);
+        t.setRight(null);
+        if(root == null)
+            root=t;
+        else{
+            TreeNode <Item> temp = root;
+            TreeNode <Item> p;
+            while(true){
+                p=temp;
+                if(value==temp.getData()){
+                    return;
+                }
+                else if(temp.getData().compareTo(value)>0){
+                    temp =temp.getLeft();
+                    if(temp==null){
+                        p.setLeft(t);
+                        return;
+                    }
+                }
+                else{
+                    temp=temp.getRight();
+                    if(temp==null){
+                        p.setRight(t);
+                        return;
+                    }
+                }
+            }
+        }
+    }
+    public boolean delete(Item value){
+        TreeNode <Item> temp = root;
+        TreeNode<Item> p = root;
+        boolean f = true;
+        while(temp.getData().compareTo(value)!=0){
+            p=temp;
+            if(temp.getData().compareTo(value)>0){
+                f = true;
+                temp=temp.getLeft();
+            } else{
+                f = false;
+                temp=temp.getRight();
+            }
+            if(temp == null)
+                return false;
+        }
+        if(temp.getLeft()==null&&temp.getRight()==null) {
+            if (temp == root)
+                root = null;
+            else if(f)
+                p.setLeft(null);
+            else
+                p.setRight(null);
+        }
+        else if(temp.getRight() == null){
+            if(temp == root)
+                root = temp.getLeft();
+            else if(f)
+                p.setLeft(temp.getLeft());
+            else
+                p.setRight(temp.getLeft());
+        }
+        else if(temp.getLeft()==null){
+            if(temp == root)
+                root=temp.getRight();
+            else if (f)
+                p.setLeft(temp.getRight());
+            else p.setRight(temp.getRight());
+        }
+        else{
+            TreeNode <Item> heir = heir(temp);
+            if(temp == root)
+                root=heir;
+            else if (f)
+                p.setLeft(heir);
+            else p.setRight(heir);
+        }
+        return true;
+    }
+}
