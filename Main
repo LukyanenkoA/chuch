@@ -1,0 +1,25 @@
+import java.util.*;
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter number of words:");
+        int q = sc.nextInt();
+        System.out.println("Enter word 1 and then its translation in russian: ");
+        String data = sc.next();
+        String data2 = sc.next();
+        BinTree<String> dict = new BinTree<String>(data, data2);
+        for(int i = 2; i<=q; i++){
+            System.out.println("Enter word "+i+ " and then its translation in russian: ");
+            data = sc.next();
+            data2 = sc.next();
+            dict.add(data, data2);
+        }
+        System.out.println("Enter word you need to find:");
+        String toFind = sc.next();
+        dict.find(toFind).printNode();
+        System.out.println("Enter word you need to delete:");
+        String toDel = sc.next();
+        dict.find(toDel).printNode();
+        dict.delete(toDel);
+    }
+}
